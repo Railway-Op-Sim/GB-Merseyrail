@@ -1,0 +1,47 @@
+name: ROS Metadata Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  collect-metadata:
+    name: Create or Update Project Metadata File
+    runs-on: ubuntu-latest
+    container:
+      image: artemisbeta/railwayopsim-ci:latest
+      env:
+        DEBIAN_FRONTEND : noninteractive
+        LANG : 'en_GB.UTF-8' 
+        LANGUAGE : 'en_GB:en' 
+        LC_ALL : 'en_GB.UTF-8'
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Get latest author
+        shell: bash
+        run: echo "##[set-output name=author;]$(git log -1 --pretty=format:'%an')"
+        id: extract_author
+
+      - name: Create/Update File
+        run: |
+            metabuild "$GITHUB_WORKSPACE" --repo-name "$GITHUB_REPOSITORY" --debug
+      
+      - name: Commit to git
+        run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add $GITHUB_WORKSPACE/Metadata/*.toml
+            git commit -m "$GITHUB_RUN_ID:$RUNNER_NAME: Modified metadata for commit \"$GITHUB_SHA\""
+        continue-on-error: true
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: ${{ github.ref }}

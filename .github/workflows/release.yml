@@ -1,0 +1,63 @@
+name: Simulation Release
+on:
+  push:
+    tags:
+      - "v*"
+permissions:
+  contents: write
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      - name: Set Output Directory
+        uses: mathiasvr/command-output@v1
+        id: outdir_name
+        with:
+          run: echo $GITHUB_REPOSITORY | cut -d '/' -f 2 | cut --complement -f1 -d '-' | xargs
+      - name: Set Version Suffix
+        uses: mathiasvr/command-output@v1
+        id: outver
+        with:
+          run: |
+            VERSION="${{ steps.previoustag.outputs.tag }}"
+            echo ${VERSION//./_} | xargs
+      - name: Publish PDF Document
+        uses: shrink/actions-document-publish@v1
+        id: publish-document
+        with:
+          sources: 'Documentation/*.md'
+      - name: Create Package
+        run: |
+          sudo apt install zip -y
+          DIR_NAME=$(echo "${{ steps.outdir_name.outputs.stdout }}" | xargs)_$(echo "${{ steps.outver.outputs.stdout }}" | xargs)
+          DIR_NAME=$(echo $DIR_NAME | xargs)
+          mkdir -p $DIR_NAME
+          mkdir -p $DIR_NAME/Program\ timetables
+          cp Program_Timetables/*.ttb $DIR_NAME/Program\ timetables/
+          mkdir -p $DIR_NAME/Railways
+          cp Railway/*.rly $DIR_NAME/Railways/
+          mkdir -p $DIR_NAME/Metadata
+          cp Metadata/*.toml $DIR_NAME/Metadata/
+          if [ -n "$(ls Sessions/*.ssn)" ]; then mkdir -p $DIR_NAME/Sessions/; cp Sessions/*.ssn $DIR_NAME/Sessions/; fi
+          if [ -d Graphics ] && [ -n "$(ls Graphics/* || true)" ]; then cp -r Graphics $DIR_NAME/Graphics; rm -rf $DIR_NAME/Graphics/.gitkeep; fi
+          cp -r Images $DIR_NAME/Images/
+          rm -rf $DIR_NAME/Images/.gitkeep
+          mkdir -p $DIR_NAME/Documentation/
+          cp ${{ steps.publish-document.outputs.pdf }} $DIR_NAME/Documentation/README.pdf
+          zip -r $DIR_NAME.zip $DIR_NAME
+          ls *.zip
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          name: ${{ github.repository }} Release ${{ steps.previoustag.outputs.tag }}
+          tag_name: ${{ steps.previoustag.outputs.tag }}
+          files: |
+            *.zip

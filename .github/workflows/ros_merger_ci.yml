@@ -1,0 +1,171 @@
+name: Merged Timetable Check
+on:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+    branches:
+      - master
+    types: [assigned, opened, synchronize, reopened]
+jobs:
+  ci-test:
+    name: Test if Mergeable with Master Branch
+    runs-on: ubuntu-latest
+    container:
+      image: artemisbeta/railwayopsim-ci:latest
+      env:
+        DEBIAN_FRONTEND : noninteractive
+        LANG : 'en_GB.UTF-8' 
+        LANGUAGE : 'en_GB:en' 
+        LC_ALL : 'en_GB.UTF-8'
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Create branch for PR
+        if: ${{ github.event_name == 'pull_request'}}
+        run: git switch -c dev
+      
+      - name: Retrieve Master
+        run: |
+            git fetch origin master
+            git checkout master
+            git checkout ${{ steps.extract_branch.outputs.branch }}
+        if: ${{ github.event_name != 'pull_request'}}
+
+      - name: Retrieve Master
+        run: |
+          git fetch origin master
+          git checkout master
+          git checkout dev
+        if: ${{ github.event_name == 'pull_request'}}
+
+      - name: Run MR Merge Script
+        run: git_merge_ttb ${{ steps.extract_branch.outputs.branch }} --soft --ttb-path Program_Timetables
+        if: ${{ github.event_name != 'pull_request'}}
+
+      - name: Run MR Merge Script
+        run: git_merge_ttb dev --soft --ttb-path Program_Timetables
+        if: ${{ github.event_name == 'pull_request'}}
+
+      - name: Check merge folder exists
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "mr_check_output"
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: merge_test_results
+          path: mr_check_output
+          retention-days: 1
+        if: ${{ steps.check_files.outputs.files_exists == 'true' }}
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: merge_test_results
+        if: ${{ github.event_name == 'pull_request' && steps.check_files.outputs.files_exists == 'true' }}
+          
+      - name: Comment Pull Request with Result
+        uses: machine-learning-apps/pr-comment@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          path: merge_test_results/mr-result.md
+        if: ${{ github.event_name == 'pull_request' && steps.check_files.outputs.files_exists == 'true' }}
+
+      - name: Download Timetable Checker
+        run: git clone https://github.com/Railway-Op-Sim/CI-Development.git
+        if: ${{ steps.check_files.outputs.files_exists == 'true' }}
+
+      - name: Check Contents
+        run: |
+          pwd
+          ls CI-Development/software
+        if: ${{ steps.check_files.outputs.files_exists == 'true' }}
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: ttb_checker_exe_archive
+          path: CI-Development/software/TimetableChecker.zip
+          retention-days: 1
+        if: ${{ steps.check_files.outputs.files_exists == 'true' }}
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: ttb_check_python_parser
+          path: CI-Development/scripts/ttb_check.py
+          retention-days: 1
+        if: ${{ steps.check_files.outputs.files_exists == 'true' }}
+
+  run_timetable_check:
+      needs: ci-test
+      name: Run Timetable Checker
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Setup Python for Parsing Output
+          uses: actions/setup-python@v2
+          with:
+              python-version: 3.8
+
+        - name: Retrieve Timetable Checker Executable
+          uses: actions/download-artifact@v1
+          with:
+            name: ttb_checker_exe_archive
+          continue-on-error: true
+
+        - name: Check merge folder exists
+          id: check_archive
+          uses: andstor/file-existence-action@v1
+          with:
+            files: "ttb_checker_exe_archive"
+
+        - name: Retrieve Timetable Check Output Parser
+          uses: actions/download-artifact@v1
+          with:
+            name: ttb_check_python_parser
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - name: Unpack Executable from Archive
+          run: Expand-Archive -LiteralPath 'ttb_checker_exe_archive\TimetableChecker.zip' -D 'TimetableChecker'
+          shell: powershell
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - name: Prepare Railway and Timetable Files for Checking
+          run: |
+              Copy-Item 'Program_Timetables\*.ttb' -destination '.'
+              Copy-Item 'Railway\*.rly' -destination '.'
+              Rename-Item -Path '*.ttb' -NewName 'test.ttb'
+              Rename-Item -Path '*.rly' -NewName 'test.rly'
+              Get-ChildItem -Path .
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - name: Run Timetable Checker Executable
+          run: .\TimetableChecker\TimetableChecker\TimetableChecker.exe
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - name: Output the file
+          run: cat Output.txt
+          shell: powershell
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - uses: actions/upload-artifact@v1
+          with:
+              name: ttb_check_output_file
+              path: Output.txt
+              if-no-files-found: ignore
+              retention-days: 1
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
+
+        - name: Parse Output File with Python
+          run: python ttb_check_python_parser/ttb_check.py Output.txt
+          if: ${{ steps.check_archive.outputs.files_exists == 'true' }}
