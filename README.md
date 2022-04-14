@@ -66,7 +66,7 @@ release_date = "2021-10-10"
 |When you are ready to publish your simulation to [Railway Operation Simulator](https://railwayoperationsimulator.com/), create a release on the GitHub repository. This will trigger the CI system to create a zip file which you can then use for the upload. Give the CI a couple of minutes, releases can be found on the sidebar for the repository. You will know if it has completed as the release will be called `<github-repo-name> Release <version-number>`, e.g. `Railway-Op-Sim/UN-Template Release v1.0.0`|
 
 
-![Image of Current State of Map](Images/image_name.bmp)
+![Image of Current State of Map](Images/GB-Merseyrail-Railway.bmp)
 
 ## Current Status
 
