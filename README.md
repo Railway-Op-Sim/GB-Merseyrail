@@ -72,8 +72,8 @@ release_date = "2021-10-10"
 
 | Stage         | Status        |
 | ------------- |:-------------:|
-| Track Plan     | :x: |
-| Signalling      | :x:      |
+| Track Plan     | :grey_question: |
+| Signalling      | :grey_question:      |
 | Naming | :x:      |
 | Speed Limits | :x: |
 | Distances | :x: |
