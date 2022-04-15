@@ -67,6 +67,7 @@ release_date = "2021-10-10"
 
 
 ![Image of Current State of Map](Images/GB-Merseyrail-Railway.bmp)
+![Image of Preferred Directions](Images/GB-Merseyrail-Railway-Preferred-Directions.bmp)
 
 ## Current Status
 
