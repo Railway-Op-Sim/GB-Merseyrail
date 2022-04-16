@@ -75,9 +75,9 @@ release_date = "2021-10-10"
 | ------------- |:-------------:|
 | Track Plan     | :heavy_check_mark: |
 | Signalling      | :heavy_check_mark:      |
-| Naming | :x:      |
-| Speed Limits | :x: |
-| Distances | :x: |
+| Naming | :heavy_check_mark:      |
+| Speed Limits | :heavy_check_mark: |
+| Distances | :heavy_check_mark: |
 | Timetable | :x: |
 | Documentation | :x: |
 
