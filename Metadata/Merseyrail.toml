@@ -1,5 +1,5 @@
 rly_file = "Merseyrail.rly"
-ttb_files = []
+ttb_files = [ "Merseyrail.ttb",]
 img_files = [ "GB-Merseyrail-Railway.bmp", "GB-Merseyrail-Railway-Preferred-Directions.bmp", "GB-Merseyrail-Railway-Grid.bmp",]
 doc_files = [ "README.md",]
 release_date = "2022-05-14"
