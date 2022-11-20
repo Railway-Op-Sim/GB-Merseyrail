@@ -84,6 +84,9 @@ release_date = "2021-10-10"
 
 ## Data Sources
 
-- A List of links pointing to various sources
-- For example:
-- [Carto Metro Paris Metro Map](http://carto.metro.free.fr/cartes/metro-paris/)
+- [RealTimeTrains](http://realtimetrains.co.uk) for the timetabling/train running times
+- [Traksy](https://traksy.uk/live/M+40+LVRPLCH) for the track layout and signal locations
+- [OpenTrainTimes](https://www.opentraintimes.com/maps) ([Northern Line](https://www.opentraintimes.com/maps/signalling/northern), [Wirral Line](https://www.opentraintimes.com/maps/signalling/wirral)) for the track layout and signal locations
+- [OpenRailwayMap](https://www.openrailwaymap.org/) for the track layout and speed limits
+- [TRACKatlas of Mainland Britain](https://www.platform5.com/Catalogue/Maps-Atlases-Track-Diagrams/TRACKatlas-of-Mainland-Britain-3rd-Edition-NEW-5TA03) for the track layout and distances
+- [Google Maps](https://www.google.com/maps/@53.3806712,-2.9671059,15246m/data=!3m1!1e3) for bridge locations
