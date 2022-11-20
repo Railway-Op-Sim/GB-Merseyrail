@@ -11,3 +11,4 @@ display_name = "Merseyrail"
 name = "Merseyrail"
 author = "mathstrains21"
 contributors = []
+ssn_files = [ "MerseyrailInitialSession.ssn",]
