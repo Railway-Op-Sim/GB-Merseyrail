@@ -1,4 +1,4 @@
-# Railway Operation Simulator Template Map 
+# Merseyrail
 The Merseyrail Network controlled by Sandhills IECC and a few PSB's.
 
 ![Image of Current State of Map](Images/GB-Merseyrail-Railway.bmp)
