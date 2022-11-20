@@ -1,7 +1,7 @@
 rly_file = "Merseyrail.rly"
 ttb_files = [ "Merseyrail.ttb",]
 img_files = [ "GB-Merseyrail-Railway.bmp", "GB-Merseyrail-Railway-Preferred-Directions.bmp", "GB-Merseyrail-Railway-Grid.bmp",]
-doc_files = [ "MerseyrailNotes.md","MerseyrailNotes.pdf"]
+doc_files = [ "MerseyrailNotes.md", "MerseyrailNotes.pdf",]
 release_date = "2022-11-20"
 version = "1.0.0"
 country_code = "GB"
@@ -12,5 +12,5 @@ name = "Merseyrail"
 author = "mathstrains19"
 contributors = []
 ssn_files = [ "MerseyrailInitialSession.ssn",]
-year="2022"
-difficulty="3"
+year = "2022"
+difficulty = "3"
