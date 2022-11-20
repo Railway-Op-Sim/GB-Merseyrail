@@ -78,7 +78,7 @@ release_date = "2021-10-10"
 | Naming | :heavy_check_mark:      |
 | Speed Limits | :heavy_check_mark: |
 | Distances | :heavy_check_mark: |
-| Timetable | :x: |
+| Timetable | :heavy_check_mark: |
 | Documentation | :x: |
 
 
