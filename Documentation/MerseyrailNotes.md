@@ -5,25 +5,25 @@ The Merseyrail network is primarily for commuters/shoppers heading into and out 
 The area is mostly controlled by one signalling centre at Sandhills. There are 2 workstations here - the Northern Line workstation controlling Southport, Ormskirk and Kirkby to Liverpool Central (Brunswick - Hunts Cross in real life is controlled by Hunts Cross PSB), and the Wirral Line workstation controlling New Brighton, West Kirby, and Bromborough - Liverpool Loop and Neston - Bidston (Chester/Ellesmere Port - Bromborough in real life is controlled by Chester, Hooton and Ellesmere Port PSB's).
 
 At some stations I have simplified the layout to what is needed for the purpose of this simulation. These are outlined as follows:
-- Chester: I have only included the electrified tracks, in reality the layout is much more complex
-- Hunts Cross: I have only included the electrified tracks, these tracks do cross the unelectrified lines from Liverpool to Manchester via Warrington.
-- Kirkby: There is another single track (unelectrified) on the otherside of the buffer stops, with trains to Manchester via Wigan. There is currently a station under construction between Kirkby and Rainford (the next station towards Wigan), which once built will be the new interchange point for Northern and Merseyrail services.
-- Ormskirk: Similar to Kirkby, there is another single track (unelectrified) on the otherside of the buffer stops, making a single long platform, with trains to Preston.
-- Southport: In addition to the simulated platforms, there are another few (unelectrified) platforms with Northern trains to Manchester via Wigan.
+-- Chester: I have only included the electrified tracks, in reality the layout is much more complex
+-- Hunts Cross: I have only included the electrified tracks, these tracks do cross the unelectrified lines from Liverpool to Manchester via Warrington
+-- Kirkby: There is another single track (unelectrified) on the otherside of the buffer stops, with trains to Manchester via Wigan. There is currently a station under construction between Kirkby and Rainford (the next station towards Wigan), which once built will be the new interchange point for Northern and Merseyrail services
+-- Ormskirk: Similar to Kirkby, there is another single track (unelectrified) on the otherside of the buffer stops, making a single long platform, with trains to Preston
+-- Southport: In addition to the simulated platforms, there are another few (unelectrified) platforms with Northern trains to Manchester via Wigan
 
 ## Simulation
 
 I have included a representation timetable of the services operated on the network. These includes all the services and frequencies of the trains that actually operate, but not neccessarily to the same timings or with the same start/finish to the service. The timetable lasts about 6 hours during the morning, with a service start, finish and a few hours of standard operation.
 
 Below is a summary of the services that operate, with a more detailed summary and some operation tips for each service after. All Wirral line and Northern line headcodes have been linked, so you should find this useful when merging trains at Hamilton Square and in the Kirkdale area.
-- 4tph New Brighton - Liverpool Loop
-- 4tph West Kirby - Liverpool Loop
-- 1tph Wrexham - Bidston
-- 4tph Chester - Liverpool Loop
-- 2tph Ellesmere Port - Liverpool Loop
-- 4tph Kirkby - Liverpool Central
-- 4tph Ormskirk - Liverpool Central
-- 4tph Southport - Hunts Cross
+-- New Brighton - Liverpool Loop (4tph)
+-- West Kirby - Liverpool Loop (4tph)
+-- Wrexham - Bidston (1tph)
+-- Chester - Liverpool Loop (4tph)
+-- Ellesmere Port - Liverpool Loop (2tph)
+-- Kirkby - Liverpool Central (4tph)
+-- Ormskirk - Liverpool Central (4tph)
+-- Southport - Hunts Cross (4tph)
 
 The included session file contains preset automatic routes that will be needed throughout the simulation. There are some locations you can use automatic routes once trains have left the depot, but you may need to break these later on to let trains back in. Only put these routes in if you aren't likely to forget later.
 
@@ -69,9 +69,6 @@ Rescue Locos with the headcode 0Z00 have been placed in various sidings accross 
 
 This route is open source and you can help contribute on [GitHub](https://github.com/Railway-Op-Sim/GB-Merseyrail). Please make an issue (or even a pull request) if you find bugs or have a suggestion to make the route better!
 
-If you would like to do something for this route, but are at a loss for what to do, either check the issues tab on GitHub or there are some ideas below:
-- Create a full day representation timetable
-- Create the real timetable
-- Create any fictional timetable you can think of
+If you would like to do something for this route, but are at a loss for what to do, either check the issues tab on GitHub or here are some ideas: create a full day representation timetable, create the real timetable, create any fictional timetable you can think of.
 
 If you have any problems while contributing for this route, you can join the [discord server](https://discord.gg/FmE8dxN) and ping mathstrains19#2057 or ask anyone around for help in the relevant chat channels. Don't forget to check the manual before asking questions, since they may already be answered there!
