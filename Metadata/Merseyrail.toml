@@ -14,3 +14,4 @@ contributors = []
 ssn_files = [ "MerseyrailInitialSession.ssn",]
 year = "2022"
 difficulty = "3"
+signal_position = "left"
